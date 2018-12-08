@@ -9,6 +9,8 @@
 #define POCET_MLETICEK 2
 #define POCET_HYDRAULICKYCH_LISOV 5
 #define POCET_MIESACOK 6
+#define POCET_KONSOVACICH_STROJOV 16
+#define POCET_FORMOVACICH_LINIEK 2
 
 #define MINUTA 60                                   // minuta
 #define HODINA MINUTA * 60                          // hodina
@@ -17,7 +19,7 @@
 #define KAPACITA_PODRVENYCH_SKLAD 1000              // velkost kapacity podrvenych
 #define KAPACITA_PRAZENYCH_SKLAD 1000               // velkost kapacity prazenych
 #define KAPACITA_KAKAOVEHO_LIKERU_SKLAD 1000         // velkost kapacity likeru
-#define KAPACITA_VSEOBECNEHO_SKLADU 5000         // velkost vseobecneho skladu
+#define KAPACITA_VSEOBECNEHO_SKLADU 40000         // velkost vseobecneho skladu
 #define VYSTUP_PRAZENIA 250                        // za jednotlivy pas 1000kg bobov
 
 #define ROK 32140800
@@ -29,6 +31,8 @@ Store Drvicky("Drvicky", POCET_DRVICIEK);                           // 1 linka p
 Store Mleticky("Mleticky", POCET_MLETICEK);                         // 2 mlynceky
 Store HydraulickyLis("HydraulickyLis", POCET_HYDRAULICKYCH_LISOV);  // 5 hydraulickych lisov
 Store Miesacky("Miesacky", POCET_MIESACOK);                         // 6 miesacok
+Store KonsovaciStroj("KonsovaciStroj", POCET_KONSOVACICH_STROJOV);  // 16 konsovacich strojov
+Store Formovacky("Formovacky", POCET_FORMOVACICH_LINIEK);           // 2 linky pre formovanie cokolady
 
 Store SkladPrazenichBobov("Sklad prazenich bôbov", KAPACITA_PRAZENYCH_SKLAD);
 Store SkladPodrvenychBobov("Sklad podrvených bôbov", KAPACITA_PODRVENYCH_SKLAD);
@@ -37,6 +41,9 @@ Store SkladKakaovejDrti("Sklad kakaovej drti", KAPACITA_VSEOBECNEHO_SKLADU);
 Store SkladLikeruNaLisovanie("Sklad likeru na lisovanie", KAPACITA_VSEOBECNEHO_SKLADU);
 Store SkladLikeruNaAkoSurovina("Sklad likeru ako surovina", KAPACITA_VSEOBECNEHO_SKLADU);
 Store SkladKakaovehoMasla("Sklad kakaoveho masla", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladCokolady("Sklad cokolady", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladKonsovanejCokolady("Sklad konsovanej cokolady", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladFormovanejCokolady("Sklad formovanej cokolady", KAPACITA_VSEOBECNEHO_SKLADU);
 
 unsigned int pocetOdpaduSkrupinKg = 0;  // celkovy odpadu skrupin v kg
 unsigned int pocetKakovejDrtiKg = 0;    // celkovy kakaovej drti v kg
@@ -46,6 +53,9 @@ unsigned int pocetLikeruAkoSurovina = 0;    // celkovy liker ako surovina
 unsigned int pocetKakaovehoPrasku = 0;      // celkovy pocet kakaoveho prasku
 unsigned int pocetKakaovehoMasla = 0;       // celkovy pocet kakaoveho masla
 unsigned int pocetCokoladyKg = 0;           // celkovy pocet cokolady v kg
+unsigned int pocetKonsovanejCokoladyKg = 0; // celkovy pocet konsovanej cokolady v kg
+unsigned int pocetFormovanychCokolad = 0;   // celkovy pocet formovanych cokolad v kg
+unsigned int pocetTemperovanychCokolad = 0;   // celkovy pocet temperovanych cokolad v kg
 
 double zaciatokSimulacie = 0;              // zaciatok simulacie
 double konieSimulacie = 0;              // koniec simulacie
@@ -171,12 +181,52 @@ class Stlacanie : public Process {
 class Mixovanie : public Process {
     void Behavior(){
         // mixovat sa bude jedine ak bude nejaka miesacka dostupna, zaroven likeru bude 450kg a zaroven 100kg masla
-        if(Miesacky.Free() && SkladLikeruNaAkoSurovina.Used() >= 450 && SkladKakaovehoMasla.Used() > 100){
+        if(Miesacky.Free() && SkladLikeruNaAkoSurovina.Used() >= 450 && SkladKakaovehoMasla.Used() >= 100){
             Enter(Miesacky, 1);
             Leave(SkladLikeruNaAkoSurovina, 450);
             Leave(SkladKakaovehoMasla, 100);
             pocetCokoladyKg += 1000;
+            Enter(SkladCokolady, 1000);
             Leave(Miesacky, 1);
+        }
+    }
+};
+
+/* PROCES KONSOVANIE */
+class Konsovanie : public Process{
+    void Behavior(){
+        // konsovat sa bude jedine ak bude nejaky konsovaci stoj volny a zaroven bude pripravenych 2000kg cokolody
+        if(KonsovaciStroj.Free() && SkladCokolady.Used() >= 2000){
+            Enter(KonsovaciStroj, 1);
+            Leave(SkladCokolady, 2000);
+            pocetKonsovanejCokoladyKg += 2000;
+            Enter(SkladKonsovanejCokolady, 2000);
+            Leave(KonsovaciStroj, 1);
+        }
+    }
+};
+
+/* PROCES FORMOVANIE */
+class Formovanie : public Process {
+    void Behavior(){
+        // formovanie sa bude jedine ak bude nejake formovaciu linka k dispozicii a zaroven bude pripravencych 2000kg
+        // konsovanej cokolady
+        if(Formovacky.Free() && SkladKonsovanejCokolady.Used() >= 1000){
+            Enter(Formovacky, 1);
+            Leave(SkladKonsovanejCokolady, 1000);
+            pocetFormovanychCokolad += 1000;
+            Enter(SkladFormovanejCokolady);
+            Leave(Formovacky, 1);
+        }
+    }
+};
+
+/* PROCES TEMPEROVANIE */
+class Temperovanie : public Process {
+    void Behavior(){
+        // temperovanie sa bude vykonavat ak budu k dispozicii 1000kg formovanej cokolady
+        if(SkladFormovanejCokolady.Used() >= 1000){
+            pocetTemperovanychCokolad += 1000;
         }
     }
 };
@@ -245,14 +295,58 @@ class GeneratorMixovania : public Event {
     }
 };
 
+class GenerovanieKonsovania : public Event {
+    void Behavior(){
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        (new Konsovanie)->Activate();
+        // 16 - 24h
+        Activate(Time + Uniform(16 * HODINA, 24 * HODINA));
+    }
+};
+
+class GeneratorFormovania : public Event{
+    void Behavior(){
+        (new Formovanie)->Activate();
+        (new Formovanie)->Activate();
+        // 25 min
+        Activate(Time + 25*60);
+    }
+};
+
+class GeneratorTemperovania : public Event {
+    void Behavior(){
+        (new Temperovanie)->Activate();
+        // 35 - 40 min
+        Activate(Time + Uniform(60 *35, 60*40));
+    }
+};
+
 int main(void) {
-    Init(0, 5 * HODINA);
+    Init(0, 100 * HODINA);
     (new GeneratorCistenia)->Activate();
     (new GeneratorPrazenia)->Activate();
     (new GeneratorDrvenia)->Activate();
     (new GeneratorMletia)->Activate();
     (new GeneratorStlacania)->Activate();
     (new GeneratorMixovania)->Activate();
+    (new GenerovanieKonsovania)->Activate();
+    (new GeneratorFormovania)->Activate();
+    (new GeneratorTemperovania)->Activate();
     Run();
 
 //    Cisticky.Output();
@@ -263,16 +357,19 @@ int main(void) {
 //    Miesacky.Output();
     konieSimulacie = Time - zaciatokSimulacie;
 
-    std::cout << "         ----->    Drt + Odpad    : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaovej drti     : " << pocetKakovejDrtiKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Odpadu skrupin    : " << pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaoveho likeru  : " << pocetKakaovehoLikeruKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Liker na lisovanie: " << pocetLikeruNaLisovanie  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Liker ako surovina: " << pocetLikeruAkoSurovina  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaovy prasok    : " << pocetKakaovehoPrasku  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaove maslo     : " << pocetKakaovehoMasla  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Cokolady          : " << pocetCokoladyKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Celkovy cas       : " << (konieSimulacie /3600)   << "h <-----" <<  std::endl;
+    std::cout << "         ----->    Drt + Odpad      : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Kakaovej drti       : " << pocetKakovejDrtiKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Odpadu skrupin      : " << pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Kakaoveho likeru    : " << pocetKakaovehoLikeruKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Liker na lisovanie  : " << pocetLikeruNaLisovanie  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Liker ako surovina  : " << pocetLikeruAkoSurovina  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Kakaovy prasok      : " << pocetKakaovehoPrasku  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Kakaove maslo       : " << pocetKakaovehoMasla  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Cokolady            : " << pocetCokoladyKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Konšovaná Cokolada  : " << pocetKonsovanejCokoladyKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Formovaná Cokolada  : " << pocetFormovanychCokolad  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Temperovana Cokolada: " << pocetFormovanychCokolad  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Celkovy cas         : " << (konieSimulacie /3600)   << "h <-----" <<  std::endl;
 
     return 0;
 }
