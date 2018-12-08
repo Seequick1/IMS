@@ -18,12 +18,12 @@
 
 #define KAPACITA_PODRVENYCH_SKLAD 1000              // velkost kapacity podrvenych
 #define KAPACITA_PRAZENYCH_SKLAD 1000               // velkost kapacity prazenych
-#define KAPACITA_KAKAOVEHO_LIKERU_SKLAD 1000         // velkost kapacity likeru
-#define KAPACITA_VSEOBECNEHO_SKLADU 40000         // velkost vseobecneho skladu
+#define KAPACITA_VSEOBECNEHO_SKLADU 4000000         // velkost vseobecneho skladu
 #define VYSTUP_PRAZENIA 250                        // za jednotlivy pas 1000kg bobov
 
 #define ROK 32140800
 #define DEN HODINA * 24
+#define MESIAC DEN * 30
 
 Store Cisticky("Cisticky", POCET_LINIEK_PRE_CISTENIE);              // 3 linky pre cistenie
 Store Prazenicky("Prazenie", POCET_LINIEK_PRE_PRAZENICIE);          // 3 linky pre prazenie
@@ -69,7 +69,6 @@ class Cistenie : public Process {
         if (Cisticky.Free()) {
             Enter(Cisticky, 1);
             Wait(POLHODINA);
-            std::cout << "|CISTENIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
         }
     }
 };
@@ -85,9 +84,7 @@ class Prazenie : public Process {
                 Enter(Prazenicky, 1);
                 Wait(POLHODINA);
                 Leave(Prazenicky, 1);
-                std::cout << "|PRAZENIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
                 Enter(SkladPrazenichBobov, VYSTUP_PRAZENIA);
-                std::cout << "|PRAZENIE|:SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
             }
         }
         else{
@@ -104,8 +101,6 @@ class Drvenie : public Process {
         // proces drtenia
         // ak je drvicka volna a zaroven  v state pred drvenim je 375kg bobôv
         if ((Drvicky.Free()) && (SkladPrazenichBobov.Used() >= 375)) {
-            std::cout <<  "|DRVENIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
-            std::cout << "|DRVENIE|:SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
             // zobereme si jednu drticku
             Enter(Drvicky, 1);
             // odobereme 375kg
@@ -137,8 +132,6 @@ class Mletie : public Process {
         // ak je pocetKakaovej drti viac ako 320kg
         if(Mleticky.Free() && SkladKakaovejDrti.Used() >= 350){
             Enter(Mleticky, 1);
-            std::cout <<  "|MLETIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
-            std::cout <<  "|MLETIE|:Pridany drt   : " << SkladKakaovejDrti.Used()   << "kg <-----" <<  std::endl;
             Leave(SkladKakaovejDrti, 350);
 
             // pridanie 350 likeru v kg
@@ -162,7 +155,6 @@ class Mletie : public Process {
 class Stlacanie : public Process {
     void Behavior(){
         if(HydraulickyLis.Free() && SkladLikeruNaLisovanie.Used() >= 192 ){
-            std::cout <<  "|STLACANIE|:Som v case|:" << (Time /3600)   << "h <-----" <<  std::endl;
             Enter(HydraulickyLis, 1);
             // zobereme si likeru
             Leave(SkladLikeruNaLisovanie, 192);
@@ -171,7 +163,6 @@ class Stlacanie : public Process {
             pocetKakaovehoMasla += 102;
             Enter(SkladKakaovehoMasla, 102);
             Leave(HydraulickyLis, 1);
-            std::cout <<  "|STLACANIE|:pocet kakoveho prasku|:" << pocetKakaovehoPrasku <<  std::endl;
 
         }
     }
@@ -231,6 +222,7 @@ class Temperovanie : public Process {
     }
 };
 
+/* GENERATOR CISTENIA */
 class GeneratorCistenia : public Event {
     void Behavior (){
         double zaciatokSimulacie = Time;;        // premenna na ziskanie casu pri zaciatku simulacie
@@ -242,6 +234,7 @@ class GeneratorCistenia : public Event {
     }
 };
 
+/* GENERATOR PRAZENIA */
 class GeneratorPrazenia : public Event {
     void Behavior(){
         // trikrat spustame proces prazenie imitovanie 3 Liniek
@@ -252,6 +245,7 @@ class GeneratorPrazenia : public Event {
     }
 };
 
+/* GENERATOR DRVANIA */
 class GeneratorDrvenia : public Event {
     void Behavior(){
         (new Drvenie)->Activate();
@@ -260,6 +254,7 @@ class GeneratorDrvenia : public Event {
     }
 };
 
+/* GENERATOR MLETIA */
 class GeneratorMletia : public Event {
     void Behavior(){
         (new Mletie)->Activate();
@@ -269,6 +264,7 @@ class GeneratorMletia : public Event {
     }
 };
 
+/* GENERATOR STLACANIA */
 class GeneratorStlacania : public Event {
     void Behavior(){
         // vytvorenie naraz 5 paralenych mixerov
@@ -282,6 +278,7 @@ class GeneratorStlacania : public Event {
     }
 };
 
+/* GENERATOR MIXOVANIA */
 class GeneratorMixovania : public Event {
     void Behavior(){
         (new Mixovanie)->Activate();
@@ -295,6 +292,7 @@ class GeneratorMixovania : public Event {
     }
 };
 
+/* GENERATOR KONSOVANIA */
 class GenerovanieKonsovania : public Event {
     void Behavior(){
         (new Konsovanie)->Activate();
@@ -319,6 +317,7 @@ class GenerovanieKonsovania : public Event {
     }
 };
 
+/* GENERATOR FORMOVANIA */
 class GeneratorFormovania : public Event{
     void Behavior(){
         (new Formovanie)->Activate();
@@ -328,6 +327,7 @@ class GeneratorFormovania : public Event{
     }
 };
 
+/* GENERATOR TEMPEROVANIA */
 class GeneratorTemperovania : public Event {
     void Behavior(){
         (new Temperovanie)->Activate();
@@ -337,7 +337,7 @@ class GeneratorTemperovania : public Event {
 };
 
 int main(void) {
-    Init(0, 100 * HODINA);
+    Init(0, MESIAC);
     (new GeneratorCistenia)->Activate();
     (new GeneratorPrazenia)->Activate();
     (new GeneratorDrvenia)->Activate();
@@ -357,18 +357,18 @@ int main(void) {
 //    Miesacky.Output();
     konieSimulacie = Time - zaciatokSimulacie;
 
-    std::cout << "         ----->    Drt + Odpad      : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaovej drti       : " << pocetKakovejDrtiKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Odpadu skrupin      : " << pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaoveho likeru    : " << pocetKakaovehoLikeruKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Liker na lisovanie  : " << pocetLikeruNaLisovanie  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Liker ako surovina  : " << pocetLikeruAkoSurovina  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaovy prasok      : " << pocetKakaovehoPrasku  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Kakaove maslo       : " << pocetKakaovehoMasla  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Cokolady            : " << pocetCokoladyKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Konšovaná Cokolada  : " << pocetKonsovanejCokoladyKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Formovaná Cokolada  : " << pocetFormovanychCokolad  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Temperovana Cokolada: " << pocetFormovanychCokolad  << "kg/h <-----" << std::endl;
+    std::cout << "         ----->    Drt + Odpad      : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg <-----" << std::endl;
+    std::cout << "         -----> Kakaovej drti       : " << pocetKakovejDrtiKg  << "kg <-----" << std::endl;
+    std::cout << "         -----> Odpadu skrupin      : " << pocetOdpaduSkrupinKg  << "kg <-----" << std::endl;
+    std::cout << "         -----> Kakaoveho likeru    : " << pocetKakaovehoLikeruKg  << "kg <-----" << std::endl;
+    std::cout << "         -----> Liker na lisovanie  : " << pocetLikeruNaLisovanie  << "kg <-----" << std::endl;
+    std::cout << "         -----> Liker ako surovina  : " << pocetLikeruAkoSurovina  << "kg <-----" << std::endl;
+    std::cout << "         -----> Kakaovy prasok      : " << pocetKakaovehoPrasku  << "kg <-----" << std::endl;
+    std::cout << "         -----> Kakaove maslo       : " << pocetKakaovehoMasla  << "kg <-----" << std::endl;
+    std::cout << "         -----> Cokolady            : " << pocetCokoladyKg  << "kg <-----" << std::endl;
+    std::cout << "         -----> Konšovaná Cokolada  : " << pocetKonsovanejCokoladyKg  << "kg <-----" << std::endl;
+    std::cout << "         -----> Formovaná Cokolada  : " << pocetFormovanychCokolad  << "kg <-----" << std::endl;
+    std::cout << "         -----> Temperovana Cokolada: " << pocetFormovanychCokolad  << "kg <-----" << std::endl;
     std::cout << "         -----> Celkovy cas         : " << (konieSimulacie /3600)   << "h <-----" <<  std::endl;
 
     return 0;

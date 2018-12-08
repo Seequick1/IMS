@@ -44,12 +44,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="3475" />
+          <entry key="cpp" value="3631" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="3475" />
+          <entry key="ObjectiveC" value="3631" />
         </counts>
       </usages-collector>
     </session>
@@ -59,17 +59,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="359" column="54" selection-start-line="359" selection-start-column="54" selection-end-line="359" selection-end-column="54" />
+            <state relative-caret-position="2924">
+              <caret line="360" column="46" selection-start-line="360" selection-start-column="46" selection-end-line="360" selection-end-column="46" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
-                <element signature="e#3027#3348#1" />
-                <element signature="e#3373#4246#1" />
-                <element signature="e#4060#5387#1" />
-                <element signature="e#5613#6788#1" />
-                <element signature="e#6313#6974#1" />
-                <element signature="e#7107#7603#1" />
-                <element signature="e#8180#8648#1" />
               </folding>
             </state>
           </provider>
@@ -95,10 +88,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="461" />
-    <option name="y" value="55" />
-    <option name="width" value="1237" />
-    <option name="height" value="1044" />
+    <option name="x" value="418" />
+    <option name="y" value="1373" />
+    <option name="width" value="1280" />
+    <option name="height" value="696" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -164,15 +157,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1544292350127</updated>
-      <workItem from="1544292351397" duration="11182000" />
+      <workItem from="1544292351397" duration="12756000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11182000" />
+    <option name="totallyTimeSpent" value="12756000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1044" extended-state="6" />
+    <frame x="0" y="1080" width="1920" height="1044" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
@@ -212,17 +205,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="359" column="54" selection-start-line="359" selection-start-column="54" selection-end-line="359" selection-end-column="54" />
+        <state relative-caret-position="2924">
+          <caret line="360" column="46" selection-start-line="360" selection-start-column="46" selection-end-line="360" selection-end-column="46" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
-            <element signature="e#3027#3348#1" />
-            <element signature="e#3373#4246#1" />
-            <element signature="e#4060#5387#1" />
-            <element signature="e#5613#6788#1" />
-            <element signature="e#6313#6974#1" />
-            <element signature="e#7107#7603#1" />
-            <element signature="e#8180#8648#1" />
           </folding>
         </state>
       </provider>
