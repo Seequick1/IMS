@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/var/www/html/School/5.semester/IMS/Implementacia/main.cpp" "/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles/Implementacia.dir/main.cpp.o"
-  "/var/www/html/School/5.semester/IMS/Implementacia/verziaFacility1v.cpp" "/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o"
-  "/var/www/html/School/5.semester/IMS/Implementacia/verziaSFacility.cpp" "/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o"
-  "/var/www/html/School/5.semester/IMS/Implementacia/zakaznik.cpp" "/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles/Implementacia.dir/zakaznik.cpp.o"
+  "/var/www/html/School/5.semester/IMS/IMS/main.cpp" "/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles/Implementacia.dir/main.cpp.o"
+  "/var/www/html/School/5.semester/IMS/IMS/verziaFacility1v.cpp" "/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o"
+  "/var/www/html/School/5.semester/IMS/IMS/verziaSFacility.cpp" "/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o"
+  "/var/www/html/School/5.semester/IMS/IMS/zakaznik.cpp" "/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles/Implementacia.dir/zakaznik.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

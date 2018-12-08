@@ -43,10 +43,10 @@ RM = /home/majkl/Documents/Programs/clion-2018.2.4/bin/cmake/linux/bin/cmake -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /var/www/html/School/5.semester/IMS/Implementacia
+CMAKE_SOURCE_DIR = /var/www/html/School/5.semester/IMS/IMS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug
+CMAKE_BINARY_DIR = /var/www/html/School/5.semester/IMS/IMS/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Implementacia.dir/depend.make
@@ -59,55 +59,55 @@ include CMakeFiles/Implementacia.dir/flags.make
 
 CMakeFiles/Implementacia.dir/main.cpp.o: CMakeFiles/Implementacia.dir/flags.make
 CMakeFiles/Implementacia.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Implementacia.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/main.cpp.o -c /var/www/html/School/5.semester/IMS/Implementacia/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Implementacia.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/main.cpp.o -c /var/www/html/School/5.semester/IMS/IMS/main.cpp
 
 CMakeFiles/Implementacia.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Implementacia.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/Implementacia/main.cpp > CMakeFiles/Implementacia.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/IMS/main.cpp > CMakeFiles/Implementacia.dir/main.cpp.i
 
 CMakeFiles/Implementacia.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Implementacia.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/Implementacia/main.cpp -o CMakeFiles/Implementacia.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/IMS/main.cpp -o CMakeFiles/Implementacia.dir/main.cpp.s
 
 CMakeFiles/Implementacia.dir/zakaznik.cpp.o: CMakeFiles/Implementacia.dir/flags.make
 CMakeFiles/Implementacia.dir/zakaznik.cpp.o: ../zakaznik.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Implementacia.dir/zakaznik.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/zakaznik.cpp.o -c /var/www/html/School/5.semester/IMS/Implementacia/zakaznik.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Implementacia.dir/zakaznik.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/zakaznik.cpp.o -c /var/www/html/School/5.semester/IMS/IMS/zakaznik.cpp
 
 CMakeFiles/Implementacia.dir/zakaznik.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Implementacia.dir/zakaznik.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/Implementacia/zakaznik.cpp > CMakeFiles/Implementacia.dir/zakaznik.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/IMS/zakaznik.cpp > CMakeFiles/Implementacia.dir/zakaznik.cpp.i
 
 CMakeFiles/Implementacia.dir/zakaznik.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Implementacia.dir/zakaznik.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/Implementacia/zakaznik.cpp -o CMakeFiles/Implementacia.dir/zakaznik.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/IMS/zakaznik.cpp -o CMakeFiles/Implementacia.dir/zakaznik.cpp.s
 
 CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o: CMakeFiles/Implementacia.dir/flags.make
 CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o: ../verziaSFacility.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o -c /var/www/html/School/5.semester/IMS/Implementacia/verziaSFacility.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o -c /var/www/html/School/5.semester/IMS/IMS/verziaSFacility.cpp
 
 CMakeFiles/Implementacia.dir/verziaSFacility.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Implementacia.dir/verziaSFacility.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/Implementacia/verziaSFacility.cpp > CMakeFiles/Implementacia.dir/verziaSFacility.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/IMS/verziaSFacility.cpp > CMakeFiles/Implementacia.dir/verziaSFacility.cpp.i
 
 CMakeFiles/Implementacia.dir/verziaSFacility.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Implementacia.dir/verziaSFacility.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/Implementacia/verziaSFacility.cpp -o CMakeFiles/Implementacia.dir/verziaSFacility.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/IMS/verziaSFacility.cpp -o CMakeFiles/Implementacia.dir/verziaSFacility.cpp.s
 
 CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o: CMakeFiles/Implementacia.dir/flags.make
 CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o: ../verziaFacility1v.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o -c /var/www/html/School/5.semester/IMS/Implementacia/verziaFacility1v.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o -c /var/www/html/School/5.semester/IMS/IMS/verziaFacility1v.cpp
 
 CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/Implementacia/verziaFacility1v.cpp > CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /var/www/html/School/5.semester/IMS/IMS/verziaFacility1v.cpp > CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.i
 
 CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/Implementacia/verziaFacility1v.cpp -o CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /var/www/html/School/5.semester/IMS/IMS/verziaFacility1v.cpp -o CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.s
 
 # Object files for target Implementacia
 Implementacia_OBJECTS = \
@@ -125,7 +125,7 @@ Implementacia: CMakeFiles/Implementacia.dir/verziaSFacility.cpp.o
 Implementacia: CMakeFiles/Implementacia.dir/verziaFacility1v.cpp.o
 Implementacia: CMakeFiles/Implementacia.dir/build.make
 Implementacia: CMakeFiles/Implementacia.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Implementacia"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Implementacia"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Implementacia.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -138,6 +138,6 @@ CMakeFiles/Implementacia.dir/clean:
 .PHONY : CMakeFiles/Implementacia.dir/clean
 
 CMakeFiles/Implementacia.dir/depend:
-	cd /var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /var/www/html/School/5.semester/IMS/Implementacia /var/www/html/School/5.semester/IMS/Implementacia /var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug /var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug /var/www/html/School/5.semester/IMS/Implementacia/cmake-build-debug/CMakeFiles/Implementacia.dir/DependInfo.cmake --color=$(COLOR)
+	cd /var/www/html/School/5.semester/IMS/IMS/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /var/www/html/School/5.semester/IMS/IMS /var/www/html/School/5.semester/IMS/IMS /var/www/html/School/5.semester/IMS/IMS/cmake-build-debug /var/www/html/School/5.semester/IMS/IMS/cmake-build-debug /var/www/html/School/5.semester/IMS/IMS/cmake-build-debug/CMakeFiles/Implementacia.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Implementacia.dir/depend
 

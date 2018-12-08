@@ -15,9 +15,9 @@
 #define POLHODINA 60 * 30                           // pol hodina
 
 #define KAPACITA_PODRVENYCH_SKLAD 1000              // velkost kapacity podrvenych
-#define KAPACITA_PODRVENYCH_PODELENYCH_SKLAD 1000   // velkost kapacity rozdelenych podrvenych
 #define KAPACITA_PRAZENYCH_SKLAD 1000               // velkost kapacity prazenych
 #define KAPACITA_KAKAOVEHO_LIKERU_SKLAD 1000         // velkost kapacity likeru
+#define KAPACITA_VSEOBECNEHO_SKLADU 5000         // velkost vseobecneho skladu
 #define VYSTUP_PRAZENIA 250                        // za jednotlivy pas 1000kg bobov
 
 #define ROK 32140800
@@ -30,10 +30,13 @@ Store Mleticky("Mleticky", POCET_MLETICEK);                         // 2 mlyncek
 Store HydraulickyLis("HydraulickyLis", POCET_HYDRAULICKYCH_LISOV);  // 5 hydraulickych lisov
 Store Miesacky("Miesacky", POCET_MIESACOK);                         // 6 miesacok
 
-Store SkladPodrvenychBobov("Sklad podrvených bôbov", KAPACITA_PODRVENYCH_SKLAD);
 Store SkladPrazenichBobov("Sklad prazenich bôbov", KAPACITA_PRAZENYCH_SKLAD);
-Store SkladRozdelenychPodrvenychBobov("Sklad rozdrvenych podelenych bobov", KAPACITA_PODRVENYCH_PODELENYCH_SKLAD);
-Store SkladKakaovehoLikeru("Sklad kakaoveho likeru", KAPACITA_KAKAOVEHO_LIKERU_SKLAD);
+Store SkladPodrvenychBobov("Sklad podrvených bôbov", KAPACITA_PODRVENYCH_SKLAD);
+Store SkladKakaovehoLikeru("Sklad kakaoveho likeru", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladKakaovejDrti("Sklad kakaovej drti", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladLikeruNaLisovanie("Sklad likeru na lisovanie", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladLikeruNaAkoSurovina("Sklad likeru ako surovina", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladKakaovehoMasla("Sklad kakaoveho masla", KAPACITA_VSEOBECNEHO_SKLADU);
 
 unsigned int pocetOdpaduSkrupinKg = 0;  // celkovy odpadu skrupin v kg
 unsigned int pocetKakovejDrtiKg = 0;    // celkovy kakaovej drti v kg
@@ -43,11 +46,6 @@ unsigned int pocetLikeruAkoSurovina = 0;    // celkovy liker ako surovina
 unsigned int pocetKakaovehoPrasku = 0;      // celkovy pocet kakaoveho prasku
 unsigned int pocetKakaovehoMasla = 0;       // celkovy pocet kakaoveho masla
 unsigned int pocetCokoladyKg = 0;           // celkovy pocet cokolady v kg
-unsigned int aktualnyPocetKakaovejDrtiKg = 0; // aktualny kakaovej drti v kg
-unsigned int aktualnyPocetKakaovehoLikeru = 0; // aktualny pocet kakaoveho likeru v kg
-unsigned int aktualnyPocetLikeruNaLisovanie = 0; // aktulany pocet likeru na lisovanie v kg
-unsigned int aktualnyPocetLikeruAkoSurovina = 0; // aktulany pocet likeru ako surovina v kg
-unsigned int aktualnyPocetKakaovehoMasla = 0; // aktulany pocet kakaoveho masla v kg
 
 double zaciatokSimulacie = 0;              // zaciatok simulacie
 double konieSimulacie = 0;              // koniec simulacie
@@ -61,7 +59,7 @@ class Cistenie : public Process {
         if (Cisticky.Free()) {
             Enter(Cisticky, 1);
             Wait(POLHODINA);
-            std::cout << "         -----> CISTENIE:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
+            std::cout << "|CISTENIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
         }
     }
 };
@@ -77,9 +75,9 @@ class Prazenie : public Process {
                 Enter(Prazenicky, 1);
                 Wait(POLHODINA);
                 Leave(Prazenicky, 1);
-                std::cout << "<-        -----> PRAZENIE:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
+                std::cout << "|PRAZENIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
                 Enter(SkladPrazenichBobov, VYSTUP_PRAZENIA);
-                std::cout << "Prazenie:SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
+                std::cout << "|PRAZENIE|:SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
             }
         }
         else{
@@ -93,29 +91,28 @@ class Prazenie : public Process {
 /* PROCES DRVENIE */
 class Drvenie : public Process {
     void Behavior(){
-        std::cout << "SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
         // proces drtenia
         // ak je drvicka volna a zaroven  v state pred drvenim je 375kg bobôv
         if ((Drvicky.Free()) && (SkladPrazenichBobov.Used() >= 375)) {
+            std::cout <<  "|DRVENIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
+            std::cout << "|DRVENIE|:SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
             // zobereme si jednu drticku
             Enter(Drvicky, 1);
             // odobereme 375kg
             Leave(SkladPrazenichBobov, 375);
-            std::cout << "Drvenie:SkladPrazenichBobov.Used() ->" << SkladPrazenichBobov.Used() << std::endl;
             // pridame 375kg do skladu podrvenych bobov
             Enter(SkladPodrvenychBobov, 375);
-            std::cout <<  "<------> DRVENIE:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
             while(SkladPodrvenychBobov.Used() > 0){
                 // toto je odpad
                 if(Random() <= 0.15){
-                    SkladPodrvenychBobov.Leave(1);
+                    Leave(SkladPodrvenychBobov, 1);
                     pocetOdpaduSkrupinKg++;
                 }
                 // kakaova drt
                 else if(Random()> 0.15){
-                    SkladPodrvenychBobov.Leave(1);
+                    Leave(SkladPodrvenychBobov, 1);
                     pocetKakovejDrtiKg++;
-                    aktualnyPocetKakaovejDrtiKg++;
+                    Enter(SkladKakaovejDrti, 1);
                 }
             }
             Leave(Drvicky, 1);
@@ -126,55 +123,58 @@ class Drvenie : public Process {
 /////* PROCES MLETIE */
 class Mletie : public Process {
     void Behavior(){
-        // ak je stroj k dispozicii a zaroven je v bode viac ako 1349kg kakaovej drte
+        // ak je stroj k dispozicii a zaroven je v bode viac ako 350 kakaovej drte
         // ak je pocetKakaovej drti viac ako 320kg
-        if(Mleticky.Free() && aktualnyPocetKakaovejDrtiKg >= 350){
-            // zobereme si 350 kakaovej drti
-            aktualnyPocetKakaovejDrtiKg -= 350;
+        if(Mleticky.Free() && SkladKakaovejDrti.Used() >= 350){
+            Enter(Mleticky, 1);
+            std::cout <<  "|MLETIE|:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
+            std::cout <<  "|MLETIE|:Pridany drt   : " << SkladKakaovejDrti.Used()   << "kg <-----" <<  std::endl;
+            Leave(SkladKakaovejDrti, 350);
+
             // pridanie 350 likeru v kg
             pocetKakaovehoLikeruKg += 350;
-            aktualnyPocetKakaovejDrtiKg += 350;
-            std::cout <<  "<------> MLETIE:Som v case   : " << (Time /3600)   << "h <-----" <<  std::endl;
-            Enter(Mleticky, 1);
-            // vyrobenie 350g kakaoveho likeru
             Enter(SkladKakaovehoLikeru, 350);
             Leave(Mleticky, 1);
-            if(aktualnyPocetKakaovejDrtiKg >= 350){
-                // odoberie sa 350 kg kakaoveho likeru
-                aktualnyPocetKakaovehoLikeru -= 350;
-                // vznikne 192kg likeru na lisovanie
-                pocetLikeruNaLisovanie += 192;
-                aktualnyPocetLikeruNaLisovanie += 192;
-                pocetLikeruAkoSurovina += 158;
-                aktualnyPocetLikeruAkoSurovina += 158;
-            }
+        }
+        if(SkladKakaovehoLikeru.Used() > 350){
+            // odpocitanie od skladky 350kg likeru
+            Leave(SkladKakaovehoLikeru, 350);
+            pocetLikeruNaLisovanie += 192;
+            pocetLikeruAkoSurovina += 158;
+//            vznikne 192kg likeru na lisovanie
+            Enter(SkladLikeruNaLisovanie, 192);
+            Enter(SkladLikeruNaAkoSurovina, 158);
         }
     }
 };
 
-/* PROCES STLACANIE */
+///* PROCES STLACANIE */
 class Stlacanie : public Process {
     void Behavior(){
-        if(HydraulickyLis.Free() && aktualnyPocetLikeruNaLisovanie >= 192 ){
+        if(HydraulickyLis.Free() && SkladLikeruNaLisovanie.Used() >= 192 ){
+            std::cout <<  "|STLACANIE|:Som v case|:" << (Time /3600)   << "h <-----" <<  std::endl;
             Enter(HydraulickyLis, 1);
             // zobereme si likeru
-            aktualnyPocetLikeruNaLisovanie -= 192;
+            Leave(SkladLikeruNaLisovanie, 192);
             // pridanie kakaoveho prasku a masla
             pocetKakaovehoPrasku += 90;
             pocetKakaovehoMasla += 102;
+            Enter(SkladKakaovehoMasla, 102);
             Leave(HydraulickyLis, 1);
+            std::cout <<  "|STLACANIE|:pocet kakoveho prasku|:" << pocetKakaovehoPrasku <<  std::endl;
+
         }
     }
 };
 
-/* PROCES MIXOVANIE */
+///* PROCES MIXOVANIE */
 class Mixovanie : public Process {
     void Behavior(){
         // mixovat sa bude jedine ak bude nejaka miesacka dostupna, zaroven likeru bude 450kg a zaroven 100kg masla
-        if(Miesacky.Free() && aktualnyPocetLikeruAkoSurovina >= 450 && aktualnyPocetKakaovehoMasla > 100){
+        if(Miesacky.Free() && SkladLikeruNaAkoSurovina.Used() >= 450 && SkladKakaovehoMasla.Used() > 100){
             Enter(Miesacky, 1);
-            aktualnyPocetKakaovehoMasla -= 100;
-            aktualnyPocetLikeruAkoSurovina -= 450;
+            Leave(SkladLikeruNaAkoSurovina, 450);
+            Leave(SkladKakaovehoMasla, 100);
             pocetCokoladyKg += 1000;
             Leave(Miesacky, 1);
         }
@@ -213,7 +213,8 @@ class GeneratorDrvenia : public Event {
 class GeneratorMletia : public Event {
     void Behavior(){
         (new Mletie)->Activate();
-        // kazdych 12 minut
+        (new Mletie)->Activate();
+        // kazdych 6 minut
         Activate(Time + 60*6);
     }
 };
@@ -245,8 +246,7 @@ class GeneratorMixovania : public Event {
 };
 
 int main(void) {
-    Init(0, 2 * HODINA);
-
+    Init(0, 5 * HODINA);
     (new GeneratorCistenia)->Activate();
     (new GeneratorPrazenia)->Activate();
     (new GeneratorDrvenia)->Activate();
@@ -255,23 +255,23 @@ int main(void) {
     (new GeneratorMixovania)->Activate();
     Run();
 
-    Cisticky.Output();
-    Prazenicky.Output();
-    Drvicky.Output();
-    Mleticky.Output();
-    HydraulickyLis.Output();
-    Miesacky.Output();
+//    Cisticky.Output();
+//    Prazenicky.Output();
+//    Drvicky.Output();
+//    Mleticky.Output();
+//    HydraulickyLis.Output();
+//    Miesacky.Output();
     konieSimulacie = Time - zaciatokSimulacie;
 
-    std::cout << "         -----> Odpadu skrupin    : " << pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
+    std::cout << "         ----->    Drt + Odpad    : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Kakaovej drti     : " << pocetKakovejDrtiKg  << "kg/h <-----" << std::endl;
+    std::cout << "         -----> Odpadu skrupin    : " << pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Kakaoveho likeru  : " << pocetKakaovehoLikeruKg  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Liker na lisovanie: " << pocetLikeruNaLisovanie  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Liker ako surovina: " << pocetLikeruAkoSurovina  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Kakaovy prasok    : " << pocetKakaovehoPrasku  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Kakaove maslo     : " << pocetKakaovehoMasla  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Cokolady          : " << pocetCokoladyKg  << "kg/h <-----" << std::endl;
-    std::cout << "         -----> Sucet             : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg/h <-----" << std::endl;
     std::cout << "         -----> Celkovy cas       : " << (konieSimulacie /3600)   << "h <-----" <<  std::endl;
 
     return 0;
