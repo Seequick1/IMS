@@ -12,9 +12,9 @@
 #define POCET_KONSOVACICH_STROJOV 16                // pocet konsovacich strojov
 #define POCET_FORMOVACICH_LINIEK 2                  // pocet liniek na formovanie
 
-#define KAPACITA_PODRVENYCH_SKLAD 1000              // velkost kapacity podrvenych
-#define KAPACITA_PRAZENYCH_SKLAD 1000               // velkost kapacity prazenych
-#define KAPACITA_VSEOBECNEHO_SKLADU 40000           // velkost vseobecneho skladu
+#define KAPACITA_PODRVENYCH_SKLAD 2000              // velkost kapacity podrvenych
+#define KAPACITA_PRAZENYCH_SKLAD 2000               // velkost kapacity prazenych
+#define KAPACITA_VSEOBECNEHO_SKLADU 400000           // velkost vseobecneho skladu
 #define VYSTUP_PRAZENIA 250                         // za jednotlivy pas 1000kg bobov
 
 #define MINUTA 60                                   // minuta
@@ -313,7 +313,6 @@ class GenerovanieKonsovania : public Event {
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
-        (new Konsovanie)->Activate();
         // 16 - 24h
         Activate(Time + Uniform(16 * HODINA, 24 * HODINA));
     }
@@ -340,7 +339,7 @@ class GeneratorTemperovania : public Event {
 
 int main(int argc, char* argv[]) {
     // TYZDEN, MESIAC, ROK
-    Init(0, ROK);
+    Init(0, TYZDEN);
     (new GeneratorCistenia)->Activate();
     (new GeneratorPrazenia)->Activate();
     (new GeneratorDrvenia)->Activate();
