@@ -1,29 +1,29 @@
 #include <iostream>
-
+#include <cstring>                                  // parsovanie argumentov
 #include "simlib.h"
 
 /** GLOBALNE PREMENNE **/
-#define POCET_LINIEK_PRE_CISTENIE 3
-#define POCET_LINIEK_PRE_PRAZENICIE 3
-#define POCET_DRVICIEK 1
-#define POCET_MLETICEK 2
-#define POCET_HYDRAULICKYCH_LISOV 5
-#define POCET_MIESACOK 6
-#define POCET_KONSOVACICH_STROJOV 16
-#define POCET_FORMOVACICH_LINIEK 2
+#define POCET_LINIEK_PRE_CISTENIE 3                 // pocet liniek na cistenie
+#define POCET_LINIEK_PRE_PRAZENICIE 3               // pocet liniek na prazenie
+#define POCET_DRVICIEK 1                            // pocet drviciek
+#define POCET_MLETICEK 2                            // pocet mlynov
+#define POCET_HYDRAULICKYCH_LISOV 5                 // pocet hydraulickych lisov
+#define POCET_MIESACOK 6                            // pocet miesacok
+#define POCET_KONSOVACICH_STROJOV 16                // pocet konsovacich strojov
+#define POCET_FORMOVACICH_LINIEK 2                  // pocet liniek na formovanie
+
+#define KAPACITA_PODRVENYCH_SKLAD 1000              // velkost kapacity podrvenych
+#define KAPACITA_PRAZENYCH_SKLAD 1000               // velkost kapacity prazenych
+#define KAPACITA_VSEOBECNEHO_SKLADU 40000           // velkost vseobecneho skladu
+#define VYSTUP_PRAZENIA 250                         // za jednotlivy pas 1000kg bobov
 
 #define MINUTA 60                                   // minuta
 #define HODINA MINUTA * 60                          // hodina
 #define POLHODINA 60 * 30                           // pol hodina
-
-#define KAPACITA_PODRVENYCH_SKLAD 1000              // velkost kapacity podrvenych
-#define KAPACITA_PRAZENYCH_SKLAD 1000               // velkost kapacity prazenych
-#define KAPACITA_VSEOBECNEHO_SKLADU 4000000         // velkost vseobecneho skladu
-#define VYSTUP_PRAZENIA 250                        // za jednotlivy pas 1000kg bobov
-
-#define ROK 32140800
-#define DEN HODINA * 24
-#define MESIAC DEN * 30
+#define DEN HODINA * 24                             // den
+#define TYZDEN DEN * 7                              // tyzden
+#define MESIAC DEN * 30                             // mesiac
+#define ROK MESIAC * 12                             // rok
 
 Store Cisticky("Cisticky", POCET_LINIEK_PRE_CISTENIE);              // 3 linky pre cistenie
 Store Prazenicky("Prazenie", POCET_LINIEK_PRE_PRAZENICIE);          // 3 linky pre prazenie
@@ -31,34 +31,34 @@ Store Drvicky("Drvicky", POCET_DRVICIEK);                           // 1 linka p
 Store Mleticky("Mleticky", POCET_MLETICEK);                         // 2 mlynceky
 Store HydraulickyLis("HydraulickyLis", POCET_HYDRAULICKYCH_LISOV);  // 5 hydraulickych lisov
 Store Miesacky("Miesacky", POCET_MIESACOK);                         // 6 miesacok
-Store KonsovaciStroj("KonsovaciStroj", POCET_KONSOVACICH_STROJOV);  // 16 konsovacich strojov
+Store KonsovaciStroj("KonsovaciStroj", POCET_KONSOVACICH_STROJOV);    // 16 konsovacich strojov (primarne)
 Store Formovacky("Formovacky", POCET_FORMOVACICH_LINIEK);           // 2 linky pre formovanie cokolady
 
-Store SkladPrazenichBobov("Sklad prazenich bôbov", KAPACITA_PRAZENYCH_SKLAD);
-Store SkladPodrvenychBobov("Sklad podrvených bôbov", KAPACITA_PODRVENYCH_SKLAD);
-Store SkladKakaovehoLikeru("Sklad kakaoveho likeru", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladKakaovejDrti("Sklad kakaovej drti", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladLikeruNaLisovanie("Sklad likeru na lisovanie", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladLikeruNaAkoSurovina("Sklad likeru ako surovina", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladKakaovehoMasla("Sklad kakaoveho masla", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladCokolady("Sklad cokolady", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladKonsovanejCokolady("Sklad konsovanej cokolady", KAPACITA_VSEOBECNEHO_SKLADU);
-Store SkladFormovanejCokolady("Sklad formovanej cokolady", KAPACITA_VSEOBECNEHO_SKLADU);
+Store SkladPrazenichBobov("Sklad prazenich bôbov", KAPACITA_PRAZENYCH_SKLAD);               // sklad prazenych bobov
+Store SkladPodrvenychBobov("Sklad podrvených bôbov", KAPACITA_PODRVENYCH_SKLAD);            // sklad podrvenych bobov
+Store SkladKakaovehoLikeru("Sklad kakaoveho likeru", KAPACITA_VSEOBECNEHO_SKLADU);          // sklad kakaovych lirkov
+Store SkladKakaovejDrti("Sklad kakaovej drti", KAPACITA_VSEOBECNEHO_SKLADU);                // sklad kakaovej drti
+Store SkladLikeruNaLisovanie("Sklad likeru na lisovanie", KAPACITA_VSEOBECNEHO_SKLADU);     // sklad likeru
+Store SkladLikeruNaAkoSurovina("Sklad likeru ako surovina", KAPACITA_VSEOBECNEHO_SKLADU);   // sklad suroviny
+Store SkladKakaovehoMasla("Sklad kakaoveho masla", KAPACITA_VSEOBECNEHO_SKLADU);            // sklad masla
+Store SkladCokolady("Sklad cokolady", KAPACITA_VSEOBECNEHO_SKLADU);                         // sklad cokolady
+Store SkladKonsovanejCokolady("Sklad konsovanej cokolady", KAPACITA_VSEOBECNEHO_SKLADU);    // sklad konsovanej cokolady
+Store SkladFormovanejCokolady("Sklad formovanej cokolady", KAPACITA_VSEOBECNEHO_SKLADU);    // sklad formovanej cokolady
 
-unsigned int pocetOdpaduSkrupinKg = 0;  // celkovy odpadu skrupin v kg
-unsigned int pocetKakovejDrtiKg = 0;    // celkovy kakaovej drti v kg
-unsigned int pocetKakaovehoLikeruKg = 0;    // celkovy kakaovej kakaoveho likeru v kg
-unsigned int pocetLikeruNaLisovanie = 0;    // celkovy liker na lisovanie
-unsigned int pocetLikeruAkoSurovina = 0;    // celkovy liker ako surovina
-unsigned int pocetKakaovehoPrasku = 0;      // celkovy pocet kakaoveho prasku
-unsigned int pocetKakaovehoMasla = 0;       // celkovy pocet kakaoveho masla
-unsigned int pocetCokoladyKg = 0;           // celkovy pocet cokolady v kg
-unsigned int pocetKonsovanejCokoladyKg = 0; // celkovy pocet konsovanej cokolady v kg
-unsigned int pocetFormovanychCokolad = 0;   // celkovy pocet formovanych cokolad v kg
-unsigned int pocetTemperovanychCokolad = 0;   // celkovy pocet temperovanych cokolad v kg
+unsigned int pocetOdpaduSkrupinKg = 0;          // celkovy odpadu skrupin v kg
+unsigned int pocetKakovejDrtiKg = 0;            // celkovy kakaovej drti v kg
+unsigned int pocetKakaovehoLikeruKg = 0;        // celkovy kakaovej kakaoveho likeru v kg
+unsigned int pocetLikeruNaLisovanie = 0;        // celkovy liker na lisovanie
+unsigned int pocetLikeruAkoSurovina = 0;        // celkovy liker ako surovina
+unsigned int pocetKakaovehoPrasku = 0;          // celkovy pocet kakaoveho prasku
+unsigned int pocetKakaovehoMasla = 0;           // celkovy pocet kakaoveho masla
+unsigned int pocetCokoladyKg = 0;               // celkovy pocet cokolady v kg
+unsigned int pocetKonsovanejCokoladyKg = 0;     // celkovy pocet konsovanej cokolady v kg
+unsigned int pocetFormovanychCokolad = 0;       // celkovy pocet formovanych cokolad v kg
+unsigned int pocetTemperovanychCokolad = 0;     // celkovy pocet temperovanych cokolad v kg
 
-double zaciatokSimulacie = 0;              // zaciatok simulacie
-double konieSimulacie = 0;              // koniec simulacie
+double zaciatokSimulacie = 0;                   // zaciatok simulacie
+double konieSimulacie = 0;                      // koniec simulacie
 
 bool jeRozbehnuty = false;
 
@@ -267,6 +267,7 @@ class GeneratorMletia : public Event {
 /* GENERATOR STLACANIA */
 class GeneratorStlacania : public Event {
     void Behavior(){
+        // vytvorenie naraz 5 paralenych lisov
         (new Stlacanie)->Activate();
         (new Stlacanie)->Activate();
         (new Stlacanie)->Activate();       
@@ -280,7 +281,8 @@ class GeneratorStlacania : public Event {
 /* GENERATOR MIXOVANIA */
 class GeneratorMixovania : public Event {
     void Behavior(){
-    	// vytvorenie naraz 5 paralenych mixerov
+    	// vytvorenie naraz 6 paralenych mixerov
+        (new Mixovanie)->Activate();
         (new Mixovanie)->Activate();
         (new Mixovanie)->Activate();
         (new Mixovanie)->Activate();
@@ -294,7 +296,7 @@ class GeneratorMixovania : public Event {
 /* GENERATOR KONSOVANIA */
 class GenerovanieKonsovania : public Event {
     void Behavior(){
-    	// 16 strojov
+    	// 16 strojov (je mozne ich pocet menit)
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
@@ -311,7 +313,7 @@ class GenerovanieKonsovania : public Event {
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
-
+        (new Konsovanie)->Activate();
         // 16 - 24h
         Activate(Time + Uniform(16 * HODINA, 24 * HODINA));
     }
@@ -336,8 +338,9 @@ class GeneratorTemperovania : public Event {
     }
 };
 
-int main(void) {
-    Init(0, MESIAC);
+int main(int argc, char* argv[]) {
+    // TYZDEN, MESIAC, ROK
+    Init(0, ROK);
     (new GeneratorCistenia)->Activate();
     (new GeneratorPrazenia)->Activate();
     (new GeneratorDrvenia)->Activate();
@@ -355,21 +358,28 @@ int main(void) {
 //    Mleticky.Output();
 //    HydraulickyLis.Output();
 //    Miesacky.Output();
+//    KonsovaciStroj.Output();
+//    Formovacky.Output();
     konieSimulacie = Time - zaciatokSimulacie;
 
-    std::cout << "         ----->    Drt + Odpad      : " << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg <-----" << std::endl;
-    std::cout << "         -----> Kakaovej drti       : " << pocetKakovejDrtiKg  << "kg <-----" << std::endl;
-    std::cout << "         -----> Odpadu skrupin      : " << pocetOdpaduSkrupinKg  << "kg <-----" << std::endl;
-    std::cout << "         -----> Kakaoveho likeru    : " << pocetKakaovehoLikeruKg  << "kg <-----" << std::endl;
-    std::cout << "         -----> Liker na lisovanie  : " << pocetLikeruNaLisovanie  << "kg <-----" << std::endl;
-    std::cout << "         -----> Liker ako surovina  : " << pocetLikeruAkoSurovina  << "kg <-----" << std::endl;
-    std::cout << "         -----> Kakaovy prasok      : " << pocetKakaovehoPrasku  << "kg <-----" << std::endl;
-    std::cout << "         -----> Kakaove maslo       : " << pocetKakaovehoMasla  << "kg <-----" << std::endl;
-    std::cout << "         -----> Cokolady            : " << pocetCokoladyKg  << "kg <-----" << std::endl;
-    std::cout << "         -----> Konšovaná Cokolada  : " << pocetKonsovanejCokoladyKg  << "kg <-----" << std::endl;
-    std::cout << "         -----> Formovaná Cokolada  : " << pocetFormovanychCokolad  << "kg <-----" << std::endl;
-    std::cout << "         -----> Temperovana Cokolada: " << pocetFormovanychCokolad  << "kg <-----" << std::endl;
-    std::cout << "         -----> Celkovy cas         : " << (konieSimulacie /3600)   << "h <-----" <<  std::endl;
+    std::cout << "|------------------SPECIFIC DATA-----------------|"<< std::endl;
+    std::cout << "|------------------------------------------------|"<< std::endl;
+    std::cout << "|-----> Kakovej Drti + Odpad: |" << pocetKakovejDrtiKg + pocetOdpaduSkrupinKg  << "kg|" << std::endl;
+    std::cout << "|-----> Kakaovej drti       : |" << pocetKakovejDrtiKg  << "kg|" << std::endl;
+    std::cout << "|-----> Odpadu skrupin      : |" << pocetOdpaduSkrupinKg  << "kg|" << std::endl;
+    std::cout << "|-----> Kakaoveho likeru    : |" << pocetKakaovehoLikeruKg  << "kg|" << std::endl;
+    std::cout << "|-----> Liker na lisovanie  : |" << pocetLikeruNaLisovanie  << "kg|" << std::endl;
+    std::cout << "|-----> Liker ako surovina  : |" << pocetLikeruAkoSurovina  << "kg|" << std::endl;
+    std::cout << "|-----> Kakaovy prasok      : |" << pocetKakaovehoPrasku  << "kg|" << std::endl;
+    std::cout << "|-----> Kakaove maslo       : |" << pocetKakaovehoMasla  << "kg|" << std::endl;
+    std::cout << "|-----> Cokolady            : |" << pocetCokoladyKg  << "kg|" << std::endl;
+    std::cout << "|-----> Konšovaná Cokolada  : |" << pocetKonsovanejCokoladyKg  << "kg|" << std::endl;
+    std::cout << "|-----> Formovaná Cokolada  : |" << pocetFormovanychCokolad  << "kg|" << std::endl;
+    std::cout << "|------------------------------------------------|"<< std::endl;
+    std::cout << "|-----> Temperovana Cokolada: |" << pocetFormovanychCokolad  << "kg|" << std::endl;
+    std::cout << "|------------------------------------------------|"<< std::endl;
+    std::cout << "|-----> Celkovy cas         : |" << (konieSimulacie /3600)   << "h|" <<  std::endl;
+    std::cout << "|------------------------------------------------|"<< std::endl;
 
     return 0;
 }
