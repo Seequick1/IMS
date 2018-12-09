@@ -142,11 +142,11 @@ class Mletie : public Process {
         if(SkladKakaovehoLikeru.Used() > 350){
             // odpocitanie od skladky 350kg likeru
             Leave(SkladKakaovehoLikeru, 350);
-            pocetLikeruNaLisovanie += 192;
-            pocetLikeruAkoSurovina += 158;
-//            vznikne 192kg likeru na lisovanie
-            Enter(SkladLikeruNaLisovanie, 192);
-            Enter(SkladLikeruNaAkoSurovina, 158);
+            pocetLikeruNaLisovanie += 108;
+            pocetLikeruAkoSurovina += 242;
+//            vznikne 108kg likeru na lisovanie
+            Enter(SkladLikeruNaLisovanie, 108);
+            Enter(SkladLikeruNaAkoSurovina, 242);
         }
     }
 };
@@ -154,16 +154,15 @@ class Mletie : public Process {
 ///* PROCES STLACANIE */
 class Stlacanie : public Process {
     void Behavior(){
-        if(HydraulickyLis.Free() && SkladLikeruNaLisovanie.Used() >= 192 ){
+        if(HydraulickyLis.Free() && SkladLikeruNaLisovanie.Used() >= 108 ){
             Enter(HydraulickyLis, 1);
             // zobereme si likeru
-            Leave(SkladLikeruNaLisovanie, 192);
+            Leave(SkladLikeruNaLisovanie, 108);
             // pridanie kakaoveho prasku a masla
-            pocetKakaovehoPrasku += 90;
-            pocetKakaovehoMasla += 102;
-            Enter(SkladKakaovehoMasla, 102);
+            pocetKakaovehoPrasku += 53;
+            pocetKakaovehoMasla += 55;
+            Enter(SkladKakaovehoMasla, 55);
             Leave(HydraulickyLis, 1);
-
         }
     }
 };
@@ -241,7 +240,8 @@ class GeneratorPrazenia : public Event {
         (new Prazenie)->Activate();
         (new Prazenie)->Activate();
         (new Prazenie)->Activate();
-        Activate(Time + POLHODINA);
+	// kazdych 30 az 35 min
+        Activate(Time + Uniform(POLHODINA, 60*35));
     }
 };
 
@@ -267,21 +267,20 @@ class GeneratorMletia : public Event {
 /* GENERATOR STLACANIA */
 class GeneratorStlacania : public Event {
     void Behavior(){
-        // vytvorenie naraz 5 paralenych mixerov
         (new Stlacanie)->Activate();
         (new Stlacanie)->Activate();
-        (new Stlacanie)->Activate();
+        (new Stlacanie)->Activate();       
         (new Stlacanie)->Activate();
         (new Stlacanie)->Activate();
         // kazdych od 18 po 22 min
-        Activate(Time + Uniform(60 * 18, 60 * 22));
+        Activate(Time + Uniform(60 * 15, 60 * 20));
     }
 };
 
 /* GENERATOR MIXOVANIA */
 class GeneratorMixovania : public Event {
     void Behavior(){
-        (new Mixovanie)->Activate();
+    	// vytvorenie naraz 5 paralenych mixerov
         (new Mixovanie)->Activate();
         (new Mixovanie)->Activate();
         (new Mixovanie)->Activate();
@@ -295,6 +294,7 @@ class GeneratorMixovania : public Event {
 /* GENERATOR KONSOVANIA */
 class GenerovanieKonsovania : public Event {
     void Behavior(){
+    	// 16 strojov
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
@@ -311,7 +311,7 @@ class GenerovanieKonsovania : public Event {
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
         (new Konsovanie)->Activate();
-        (new Konsovanie)->Activate();
+
         // 16 - 24h
         Activate(Time + Uniform(16 * HODINA, 24 * HODINA));
     }
